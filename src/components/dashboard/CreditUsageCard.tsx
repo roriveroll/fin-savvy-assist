@@ -50,7 +50,7 @@ const CreditUsageCard = () => {
             <div className="text-sm text-finance-gray-dark">Disponible</div>
             <div className="text-sm font-medium">{formatCurrency(totalCredit - usedCredit)}</div>
           </div>
-          <Progress value={percentUsed} className="h-3" indicatorClassName={usageLevel.color} />
+          <Progress value={percentUsed} className={`h-3 ${usageLevel.color}`} />
           <div className="flex justify-between items-center mt-1">
             <div className="text-sm text-finance-gray-dark">Utilizado</div>
             <div className="text-sm font-medium">{formatCurrency(usedCredit)}</div>
