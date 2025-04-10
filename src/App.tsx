@@ -6,7 +6,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
-import Chatbot from "./pages/Chatbot";
 import NotFound from "./pages/NotFound";
 import MainLayout from "./components/layout/MainLayout";
 
@@ -22,12 +21,7 @@ const App = () => (
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Index />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/chatbot" element={<Chatbot />} />
-            <Route path="/accounts" element={<Dashboard />} />
-            <Route path="/cards" element={<Dashboard />} />
-            <Route path="/analytics" element={<Dashboard />} />
             <Route path="/settings" element={<Dashboard />} />
-            <Route path="/recommendations" element={<Dashboard />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

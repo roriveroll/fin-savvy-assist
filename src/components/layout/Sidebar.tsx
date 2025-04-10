@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Home, CreditCard, Wallet, PieChart, MessageCircle, Settings, ChevronRight } from "lucide-react";
+import { Home, MessageCircle, Settings, ChevronRight } from "lucide-react";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -12,10 +12,6 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
   
   const menuItems = [
     { id: "dashboard", label: "Dashboard", icon: Home, route: "/" },
-    { id: "accounts", label: "Mis Cuentas", icon: Wallet, route: "/accounts" },
-    { id: "cards", label: "Tarjetas", icon: CreditCard, route: "/cards" },
-    { id: "analytics", label: "Análisis", icon: PieChart, route: "/analytics" },
-    { id: "chatbot", label: "Asistente", icon: MessageCircle, route: "/chatbot" },
     { id: "settings", label: "Configuración", icon: Settings, route: "/settings" },
   ];
 

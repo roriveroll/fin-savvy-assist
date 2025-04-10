@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Info, ArrowUpRight } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Link } from "react-router-dom";
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 const ExpensesAnalysisCard = () => {
   const expenses = [
@@ -44,7 +44,7 @@ const ExpensesAnalysisCard = () => {
       </CardHeader>
       <CardContent className="p-6">
         <div className="flex flex-col md:flex-row items-center">
-          <div className="w-full md:w-1/2 h-48">
+          <div className="w-full md:w-1/2 h-48 relative">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -61,14 +61,6 @@ const ExpensesAnalysisCard = () => {
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
-                <Legend 
-                  layout="vertical" 
-                  verticalAlign="middle" 
-                  align="right"
-                  formatter={(value, entry, index) => (
-                    <span className="text-xs">{value}</span>
-                  )}
-                />
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -100,7 +92,7 @@ const ExpensesAnalysisCard = () => {
         </div>
         
         <div className="mt-4 pt-4 border-t border-gray-100">
-          <Link to="/analytics" className="text-finance-blue flex items-center justify-center font-medium">
+          <Link to="/dashboard" className="text-finance-blue flex items-center justify-center font-medium">
             Ver análisis detallado
             <ArrowUpRight className="h-4 w-4 ml-1" />
           </Link>
