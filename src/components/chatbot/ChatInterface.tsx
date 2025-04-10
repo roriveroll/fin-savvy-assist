@@ -1,12 +1,13 @@
 
 import { useState, useRef, useEffect } from "react";
-import { Send, User, Bot, PlusCircle, CreditCard, ArrowRight, Wallet, ChevronRight, X } from "lucide-react";
+import { Send, User, Bot, PlusCircle, CreditCard, ArrowRight, Wallet, ChevronRight, X, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface Message {
   id: number;
@@ -24,7 +25,11 @@ interface Message {
   }[];
 }
 
-const ChatInterface = () => {
+interface ChatInterfaceProps {
+  apiKey?: string;
+}
+
+const ChatInterface = ({ apiKey }: ChatInterfaceProps) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
@@ -45,7 +50,7 @@ const ChatInterface = () => {
     scrollToBottom();
   }, [messages]);
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (input.trim() === "") return;
 
     // Add user message
@@ -58,11 +63,90 @@ const ChatInterface = () => {
     setInput("");
     setIsTyping(true);
 
-    // Simulate bot response
+    try {
+      // If apiKey is provided, attempt to use external AI service
+      if (apiKey) {
+        await processWithExternalAI(input, userMessage.id);
+      } else {
+        // Fallback to simulated responses
+        simulateBotResponse(input);
+      }
+    } catch (error) {
+      console.error("Error processing message:", error);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: prev.length + 1,
+          type: "bot",
+          text: "Lo siento, tuve un problema al procesar tu mensaje. ¿Podrías intentarlo de nuevo?"
+        }
+      ]);
+      setIsTyping(false);
+    }
+  };
+
+  const processWithExternalAI = async (userInput: string, messageId: number) => {
+    // This is a placeholder for actual API integration
+    // In a real implementation, you would:
+    // 1. Call your selected AI API (OpenAI, Hugging Face, etc.)
+    // 2. Process the response
+    // 3. Format it for display
+
+    try {
+      /* Example API call structure (commented out as it needs actual implementation):
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'gpt-3.5-turbo',
+          messages: [
+            {
+              role: 'system',
+              content: 'You are a financial assistant that provides advice based on user data.'
+            },
+            {
+              role: 'user',
+              content: userInput
+            }
+          ],
+          temperature: 0.7,
+        }),
+      });
+
+      const data = await response.json();
+      
+      if (data.choices && data.choices.length > 0) {
+        const aiResponse = data.choices[0].message.content;
+        
+        // Process AI response here
+        setMessages(prev => [...prev, {
+          id: prev.length + 1,
+          type: 'bot',
+          text: aiResponse
+        }]);
+      }
+      */
+      
+      // For now, use the simulation as fallback
+      simulateBotResponse(userInput);
+      
+    } catch (error) {
+      console.error("Error calling AI API:", error);
+      throw error;
+    } finally {
+      setIsTyping(false);
+    }
+  };
+
+  const simulateBotResponse = (userInput: string) => {
+    // Simulate bot response (placeholder for actual AI integration)
     setTimeout(() => {
       let botResponse: Message;
 
-      if (input.toLowerCase().includes("tarjeta") || input.toLowerCase().includes("crédito")) {
+      if (userInput.toLowerCase().includes("tarjeta") || userInput.toLowerCase().includes("crédito")) {
         botResponse = {
           id: messages.length + 2,
           type: "bot",
@@ -80,7 +164,7 @@ const ChatInterface = () => {
             }
           ]
         };
-      } else if (input.toLowerCase().includes("ahorro") || input.toLowerCase().includes("ahorrar")) {
+      } else if (userInput.toLowerCase().includes("ahorro") || userInput.toLowerCase().includes("ahorrar")) {
         botResponse = {
           id: messages.length + 2,
           type: "bot",
@@ -98,7 +182,7 @@ const ChatInterface = () => {
             }
           ]
         };
-      } else if (input.toLowerCase().includes("préstamo") || input.toLowerCase().includes("crédito auto")) {
+      } else if (userInput.toLowerCase().includes("préstamo") || userInput.toLowerCase().includes("crédito auto")) {
         botResponse = {
           id: messages.length + 2,
           type: "bot",
@@ -135,7 +219,7 @@ const ChatInterface = () => {
     <div className="h-full flex flex-col rounded-lg overflow-hidden bg-white">
       <div className="bg-finance-blue px-6 py-4 text-white">
         <div className="flex items-center">
-          <Bot className="h-6 w-6 mr-2" />
+          <MessageCircle className="h-5 w-5 mr-2" />
           <h2 className="font-medium">Asistente Financiero</h2>
         </div>
         <p className="text-xs opacity-80 mt-1">
@@ -143,80 +227,87 @@ const ChatInterface = () => {
         </p>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
         {messages.map((message) => (
           <div
             key={message.id}
             className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}
           >
             <div 
-              className={`max-w-[80%] rounded-2xl p-3 ${
+              className={`flex items-start gap-2 max-w-[85%] ${
                 message.type === "user" 
-                  ? "bg-finance-blue text-white rounded-tr-none" 
-                  : "bg-finance-gray-light text-finance-gray-dark rounded-tl-none"
+                  ? "flex-row-reverse" 
+                  : "flex-row"
               }`}
             >
-              <div className="flex items-start gap-2">
-                {message.type === "bot" && (
-                  <div className="mt-1">
-                    <Bot className="h-4 w-4 text-finance-blue" />
+              <div className="flex-shrink-0 mt-1">
+                {message.type === "bot" ? (
+                  <Avatar className="h-8 w-8 bg-finance-blue-light">
+                    <AvatarFallback>AI</AvatarFallback>
+                    <AvatarImage src="/bot-avatar.png" />
+                  </Avatar>
+                ) : (
+                  <Avatar className="h-8 w-8 bg-finance-blue text-white">
+                    <AvatarFallback>U</AvatarFallback>
+                  </Avatar>
+                )}
+              </div>
+              
+              <div
+                className={`rounded-2xl p-3 ${
+                  message.type === "user" 
+                    ? "bg-finance-blue text-white rounded-tr-none" 
+                    : "bg-white border border-gray-200 shadow-sm text-finance-gray-dark rounded-tl-none"
+                }`}
+              >
+                <p className="text-sm whitespace-pre-wrap">{message.text}</p>
+                
+                {message.options && (
+                  <div className="mt-3 space-y-2">
+                    {message.options.map((option, index) => (
+                      <Card key={index} className="border-finance-blue border-opacity-20">
+                        <CardContent className="p-3">
+                          <div className="flex gap-2">
+                            <div className="mt-1 flex-shrink-0">
+                              <option.icon className="h-4 w-4 text-finance-blue" />
+                            </div>
+                            <div>
+                              <h4 className="text-sm font-medium">{option.title}</h4>
+                              <p className="text-xs text-finance-gray-dark">{option.description}</p>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
                   </div>
                 )}
-                <div>
-                  <p className="text-sm">{message.text}</p>
-                  
-                  {message.options && (
-                    <div className="mt-3 space-y-2">
-                      {message.options.map((option, index) => (
-                        <Card key={index} className="border-finance-blue border-opacity-20">
-                          <CardContent className="p-3">
-                            <div className="flex gap-2">
-                              <div className="mt-1">
-                                <option.icon className="h-4 w-4 text-finance-blue" />
-                              </div>
-                              <div>
-                                <h4 className="text-sm font-medium">{option.title}</h4>
-                                <p className="text-xs text-finance-gray-dark">{option.description}</p>
-                              </div>
+                
+                {message.products && (
+                  <div className="mt-3 space-y-3">
+                    {message.products.map((product, index) => (
+                      <Card key={index} className="bg-white">
+                        <CardContent className="p-3">
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <h4 className="text-sm font-medium">{product.name}</h4>
+                              <p className="text-xs text-finance-gray-dark">{product.description}</p>
                             </div>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  )}
-                  
-                  {message.products && (
-                    <div className="mt-3 space-y-3">
-                      {message.products.map((product, index) => (
-                        <Card key={index} className="bg-white">
-                          <CardContent className="p-3">
-                            <div className="flex justify-between items-start">
-                              <div>
-                                <h4 className="text-sm font-medium">{product.name}</h4>
-                                <p className="text-xs text-finance-gray-dark">{product.description}</p>
-                              </div>
-                              <Badge className="bg-finance-blue-light text-finance-blue">{product.match}% match</Badge>
-                            </div>
-                            <div className="mt-2 flex justify-end">
-                              <Button 
-                                variant="outline" 
-                                size="sm" 
-                                className="text-xs h-8 text-finance-blue border-finance-blue hover:bg-finance-blue-light"
-                                onClick={() => handleProductSelect(product.name)}
-                              >
-                                Más info
-                                <ChevronRight className="h-3 w-3 ml-1" />
-                              </Button>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  )}
-                </div>
-                {message.type === "user" && (
-                  <div className="mt-1">
-                    <User className="h-4 w-4 text-white" />
+                            <Badge className="bg-finance-blue-light text-finance-blue">{product.match}% match</Badge>
+                          </div>
+                          <div className="mt-2 flex justify-end">
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              className="text-xs h-8 text-finance-blue border-finance-blue hover:bg-finance-blue-light"
+                              onClick={() => handleProductSelect(product.name)}
+                            >
+                              Más info
+                              <ChevronRight className="h-3 w-3 ml-1" />
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
                   </div>
                 )}
               </div>
@@ -226,9 +317,13 @@ const ChatInterface = () => {
         
         {isTyping && (
           <div className="flex justify-start">
-            <div className="bg-finance-gray-light text-finance-gray-dark rounded-2xl rounded-tl-none p-3 max-w-[80%]">
-              <div className="flex items-center gap-2">
-                <Bot className="h-4 w-4 text-finance-blue" />
+            <div className="flex items-start gap-2">
+              <Avatar className="h-8 w-8 bg-finance-blue-light">
+                <AvatarFallback>AI</AvatarFallback>
+                <AvatarImage src="/bot-avatar.png" />
+              </Avatar>
+              
+              <div className="bg-white border border-gray-200 shadow-sm text-finance-gray-dark rounded-2xl rounded-tl-none p-3">
                 <div className="flex gap-1">
                   <div className="h-2 w-2 rounded-full bg-finance-gray-dark animate-bounce"></div>
                   <div className="h-2 w-2 rounded-full bg-finance-gray-dark animate-bounce delay-100"></div>
@@ -242,14 +337,14 @@ const ChatInterface = () => {
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="p-4 border-t border-gray-200">
-        <div className="mb-3 flex items-center gap-2 overflow-x-auto pb-2">
+      <div className="p-4 border-t border-gray-200 bg-white">
+        <div className="mb-3 flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
           {suggestedQuestions.map((question, index) => (
             <Button
               key={index}
               variant="outline"
               size="sm"
-              className="whitespace-nowrap text-xs"
+              className="whitespace-nowrap text-xs flex-shrink-0"
               onClick={() => {
                 setInput(question);
               }}
@@ -259,18 +354,23 @@ const ChatInterface = () => {
           ))}
         </div>
         
-        <div className="flex gap-2">
+        <form 
+          className="flex gap-2" 
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSendMessage();
+          }}
+        >
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Escribe tu pregunta..."
             className="flex-1"
-            onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
           />
-          <Button onClick={handleSendMessage} className="bg-finance-blue hover:bg-finance-blue-dark">
+          <Button type="submit" className="bg-finance-blue hover:bg-finance-blue-dark flex-shrink-0">
             <Send className="h-4 w-4" />
           </Button>
-        </div>
+        </form>
       </div>
     </div>
   );

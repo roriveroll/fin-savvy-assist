@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Home, MessageCircle, Settings, ChevronRight } from "lucide-react";
+import { Home, Settings } from "lucide-react";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -11,7 +11,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
   const [activeItem, setActiveItem] = useState("dashboard");
   
   const menuItems = [
-    { id: "dashboard", label: "Dashboard", icon: Home, route: "/" },
+    { id: "dashboard", label: "Dashboard", icon: Home, route: "/dashboard" },
     { id: "settings", label: "Configuración", icon: Settings, route: "/settings" },
   ];
 
@@ -35,22 +35,6 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
             </Link>
           ))}
         </div>
-        
-        {isOpen && (
-          <div className="mt-auto mb-6 mx-3">
-            <div className="bg-finance-blue-light rounded-lg p-4">
-              <h3 className="text-finance-blue font-medium mb-2">¿Necesitas ayuda?</h3>
-              <p className="text-sm text-finance-gray-dark mb-3">Consulta con nuestro asistente financiero</p>
-              <Link 
-                to="/chatbot"
-                className="flex items-center text-sm text-finance-blue font-medium"
-              >
-                Ir a Asistente
-                <ChevronRight className="w-4 h-4 ml-1" />
-              </Link>
-            </div>
-          </div>
-        )}
       </div>
     </aside>
   );
