@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Info, ArrowUpRight } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Link } from "react-router-dom";
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip as RechartsTooltip } from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 const ExpensesAnalysisCard = () => {
   const expenses = [
@@ -35,10 +35,8 @@ const ExpensesAnalysisCard = () => {
               <TooltipTrigger>
                 <Info className="h-4 w-4 text-finance-gray" />
               </TooltipTrigger>
-              <TooltipContent className="w-80 p-3 text-sm">
-                <p>En esta sección puedes visualizar cómo se distribuyen tus gastos mensuales por categoría. Esta información te ayuda a identificar dónde estás gastando más dinero.</p>
-                <p className="mt-2">El gráfico muestra el porcentaje y monto de tus gastos en cada categoría. Al conocer tus patrones de gasto, puedes tomar decisiones más informadas sobre cómo ahorrar y optimizar tus finanzas.</p>
-                <p className="mt-2">Se recomienda revisar periódicamente esta distribución para ajustar tu presupuesto según tus objetivos financieros.</p>
+              <TooltipContent>
+                <p>Desglose de tus gastos mensuales por categoría.</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -63,10 +61,6 @@ const ExpensesAnalysisCard = () => {
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
-                <RechartsTooltip 
-                  formatter={(value: number) => [formatCurrency(value), 'Gasto']}
-                  contentStyle={{ backgroundColor: 'white', borderRadius: '8px', border: 'none', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
-                />
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -98,7 +92,7 @@ const ExpensesAnalysisCard = () => {
         </div>
         
         <div className="mt-4 pt-4 border-t border-gray-100">
-          <Link to="/expenses" className="text-finance-blue flex items-center justify-center font-medium">
+          <Link to="/dashboard" className="text-finance-blue flex items-center justify-center font-medium">
             Ver análisis detallado
             <ArrowUpRight className="h-4 w-4 ml-1" />
           </Link>

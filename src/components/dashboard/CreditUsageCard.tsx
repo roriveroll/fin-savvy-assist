@@ -37,10 +37,8 @@ const CreditUsageCard = () => {
               <TooltipTrigger>
                 <Info className="h-4 w-4 text-finance-gray" />
               </TooltipTrigger>
-              <TooltipContent className="w-80 p-3 text-sm">
-                <p>El uso de crédito es el porcentaje de tu límite total de crédito que estás utilizando actualmente. Este factor representa el 30% de tu score crediticio.</p>
-                <p className="mt-2">Para mantener un buen score, se recomienda usar menos del 30% de tu límite de crédito. Usar más del 75% puede afectar negativamente tu calificación crediticia.</p>
-                <p className="mt-2">Mantener un uso bajo de crédito demuestra a los prestamistas que gestionas responsablemente tus finanzas y no dependes excesivamente del crédito disponible.</p>
+              <TooltipContent>
+                <p>El porcentaje de tu límite de crédito que estás utilizando actualmente.</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

@@ -6,7 +6,6 @@ import ChatInterface from "@/components/chatbot/ChatInterface";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 const ChatbotPopup = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -70,11 +69,9 @@ const ChatbotPopup = () => {
               </button>
             </div>
           </div>
-          <ScrollArea className="flex-1 overflow-auto">
-            <div className="p-4">
-              <ChatInterface apiKey={apiKeySet ? apiKey : undefined} />
-            </div>
-          </ScrollArea>
+          <div className="flex-1 overflow-hidden">
+            <ChatInterface apiKey={apiKeySet ? apiKey : undefined} />
+          </div>
         </div>
       </DialogContent>
     </Dialog>

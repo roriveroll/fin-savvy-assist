@@ -29,10 +29,8 @@ const CreditScoreCard = () => {
               <TooltipTrigger>
                 <Info className="h-4 w-4 text-finance-gray" />
               </TooltipTrigger>
-              <TooltipContent className="w-80 p-3 text-sm">
-                <p>En esta sección encontrarás tu Calificación Crediticia y cada uno de los factores que la componen. Esta calificación tiene el nombre de BC Score® y es calculada por Buró de Crédito (la sociedad de información crediticia más importante en México).</p>
-                <p className="mt-2">Tu calificación o BC Score puede ir de 456 a los 760 puntos (mientras más alto, es mejor) e indica en un solo número tu comportamiento crediticio. Sirve para que cuando solicites un nuevo crédito las instituciones financieras sepan si eres un buen o mal pagador.</p>
-                <p className="mt-2">Una baja calificación puede causar que te den las tasas de interés más altas o incluso te nieguen un crédito. Una calificación alta te permitirá acceder a más opciones de créditos y con las tasas más bajas.</p>
+              <TooltipContent>
+                <p className="w-64">Tu score crediticio es un número que representa tu salud financiera en base a tu historial crediticio.</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

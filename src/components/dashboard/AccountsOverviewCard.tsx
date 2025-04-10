@@ -31,10 +31,8 @@ const AccountsOverviewCard = () => {
               <TooltipTrigger>
                 <Info className="h-4 w-4 text-finance-gray" />
               </TooltipTrigger>
-              <TooltipContent className="w-80 p-3 text-sm">
-                <p>En esta sección encontrarás un resumen de todas tus cuentas bancarias y de inversión activas, así como tus tarjetas de crédito.</p>
-                <p className="mt-2">Puedes ver el saldo actual de cada cuenta, su tendencia reciente y el tipo de cuenta. Esta información te ayudará a tener una visión general de tu situación financiera.</p>
-                <p className="mt-2">Mantener diversas cuentas financieras te permite organizar mejor tus finanzas y aprovechar diferentes beneficios según tus necesidades.</p>
+              <TooltipContent>
+                <p>Resumen de todas tus cuentas y saldos actuales.</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
