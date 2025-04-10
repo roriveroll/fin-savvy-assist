@@ -22,8 +22,10 @@ const PaymentHistoryCard = () => {
               <TooltipTrigger>
                 <Info className="h-4 w-4 text-finance-gray" />
               </TooltipTrigger>
-              <TooltipContent>
-                <p>Un buen historial de pagos mejora tu score crediticio.</p>
+              <TooltipContent className="w-80 p-3 text-sm">
+                <p>En esta sección podrás ver un resumen de tu historial de pagos, que es uno de los factores más importantes para tu score crediticio.</p>
+                <p className="mt-2">Aquí puedes ver cuántas veces has realizado tus pagos a tiempo y cuántos pagos han estado fuera de tiempo. Mantener un buen historial de pagos es fundamental para mejorar tu calificación crediticia y obtener mejores condiciones en futuros créditos.</p>
+                <p className="mt-2">Recuerda que los pagos tardíos pueden permanecer en tu historial crediticio hasta por 72 meses.</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

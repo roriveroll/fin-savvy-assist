@@ -1,10 +1,11 @@
 
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CreditCard, Landmark, Shield, TrendingUp, ArrowRight, ArrowUpRight, ThumbsUp, Wallet } from "lucide-react";
+import { CreditCard, Landmark, Shield, TrendingUp, ArrowRight, ArrowUpRight, ThumbsUp, Wallet, Info } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const RecommendedProductsCard = () => {
   const products = {
@@ -78,7 +79,21 @@ const RecommendedProductsCard = () => {
       <CardHeader className="px-6 pb-0 pt-6">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-medium">Productos Recomendados</CardTitle>
-          <ThumbsUp className="h-4 w-4 text-finance-purple" />
+          <div className="flex items-center gap-2">
+            <ThumbsUp className="h-4 w-4 text-finance-purple" />
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Info className="h-4 w-4 text-finance-gray" />
+                </TooltipTrigger>
+                <TooltipContent className="w-80 p-3 text-sm">
+                  <p>Estas recomendaciones están personalizadas según tu perfil financiero, historial crediticio y hábitos de consumo.</p>
+                  <p className="mt-2">El porcentaje de "match" indica qué tan adecuado es el producto para tu situación financiera actual. Cuanto más alto sea el porcentaje, más probable es que cumpla con tus necesidades específicas.</p>
+                  <p className="mt-2">Todas las recomendaciones se actualizan mensualmente basadas en tus datos más recientes y las mejores ofertas disponibles del mercado.</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
         </div>
         <p className="text-sm text-finance-gray-dark mt-1">
           Seleccionados especialmente para tu perfil financiero
