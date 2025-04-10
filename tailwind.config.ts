@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,40 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+                // Colores personalizados para la aplicación bancaria
+                finance: {
+                    blue: {
+                      light: '#E6F3FF',
+                      DEFAULT: '#3A86FF',
+                      dark: '#1A56B0',
+                    },
+                    green: {
+                      light: '#E3F9E5',
+                      DEFAULT: '#4CAF50',
+                      dark: '#2E7D32',
+                    },
+                    purple: {
+                      light: '#F0E7FF',
+                      DEFAULT: '#9B59B6',
+                      dark: '#6D3B8D', 
+                    },
+                    gray: {
+                      light: '#F5F7FA',
+                      DEFAULT: '#8E9196',
+                      dark: '#444750',
+                    },
+                    red: {
+                      light: '#FFE6E6',
+                      DEFAULT: '#FF5252',
+                      dark: '#C62828',
+                    },
+                    yellow: {
+                      light: '#FFF9E6',
+                      DEFAULT: '#FFC107',
+                      dark: '#F57F17',
+                    }
+                }
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,11 +118,31 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+                'fade-in': {
+                    '0%': {
+                        opacity: '0',
+                        transform: 'translateY(10px)'
+                    },
+                    '100%': {
+                        opacity: '1',
+                        transform: 'translateY(0)'
+                    }
+                },
+                'pulse-subtle': {
+                    '0%, 100%': {
+                        opacity: '1'
+                    },
+                    '50%': {
+                        opacity: '0.85'
+                    }
+                }
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+                'fade-in': 'fade-in 0.5s ease-out',
+                'pulse-subtle': 'pulse-subtle 3s ease-in-out infinite'
 			}
 		}
 	},
