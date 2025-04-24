@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from "react";
 import { Send, User, Bot, PlusCircle, CreditCard, ArrowRight, Wallet, ChevronRight, X, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -178,8 +179,8 @@ const ChatInterface = ({ apiKey }: ChatInterfaceProps) => {
         </p>
       </div>
 
-      <ScrollArea className="flex-1 p-4">
-        <div className="space-y-6">
+      <ScrollArea className="flex-1">
+        <div className="p-4 space-y-6">
           {messages.map((message) => (
             <div
               key={message.id}
