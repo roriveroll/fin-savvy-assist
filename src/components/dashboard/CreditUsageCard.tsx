@@ -1,34 +1,39 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Info } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-
 const CreditUsageCard = () => {
   const totalCredit = 120000;
   const usedCredit = 36000;
-  const percentUsed = Math.round((usedCredit / totalCredit) * 100);
-  
+  const percentUsed = Math.round(usedCredit / totalCredit * 100);
   const getUsageLevel = (percent: number) => {
-    if (percent <= 30) return { text: "Óptimo", color: "bg-finance-green" };
-    if (percent <= 50) return { text: "Bueno", color: "bg-finance-blue" };
-    if (percent <= 75) return { text: "Precaución", color: "bg-finance-yellow" };
-    return { text: "Alto", color: "bg-finance-red" };
+    if (percent <= 30) return {
+      text: "Óptimo",
+      color: "bg-finance-green"
+    };
+    if (percent <= 50) return {
+      text: "Bueno",
+      color: "bg-finance-blue"
+    };
+    if (percent <= 75) return {
+      text: "Precaución",
+      color: "bg-finance-yellow"
+    };
+    return {
+      text: "Alto",
+      color: "bg-finance-red"
+    };
   };
-  
   const usageLevel = getUsageLevel(percentUsed);
-  
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('es-MX', { 
-      style: 'currency', 
+    return new Intl.NumberFormat('es-MX', {
+      style: 'currency',
       currency: 'MXN',
       minimumFractionDigits: 0,
-      maximumFractionDigits: 0 
+      maximumFractionDigits: 0
     }).format(amount);
   };
-  
-  return (
-    <Card className="card-shadow card-hover">
+  return <Card className="card-shadow card-hover">
       <CardHeader className="px-6 pb-0 pt-6">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-medium">Uso de Crédito</CardTitle>
@@ -38,7 +43,7 @@ const CreditUsageCard = () => {
                 <Info className="h-4 w-4 text-finance-gray" />
               </TooltipTrigger>
               <TooltipContent>
-                <p>El porcentaje de tu límite de crédito que estás utilizando actualmente.</p>
+                <p>Esta barra indica el porcentaje de tu crédito total disponible que ya utilizaste. Mantener este porcentaje por debajo del 30% es ideal para mantener o mejorar tu score crediticio y salud financiera general.</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -70,8 +75,6 @@ const CreditUsageCard = () => {
           </div>
         </div>
       </CardContent>
-    </Card>
-  );
+    </Card>;
 };
-
 export default CreditUsageCard;

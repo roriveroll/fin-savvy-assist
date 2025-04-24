@@ -1,19 +1,14 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle, XCircle, Info } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-
 const PaymentHistoryCard = () => {
   const paymentData = {
     onTime: 11,
     late: 1,
     total: 12
   };
-  
-  const onTimePercentage = Math.round((paymentData.onTime / paymentData.total) * 100);
-  
-  return (
-    <Card className="card-shadow card-hover">
+  const onTimePercentage = Math.round(paymentData.onTime / paymentData.total * 100);
+  return <Card className="card-shadow card-hover">
       <CardHeader className="px-6 pb-0 pt-6">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-medium">Historial de Pagos</CardTitle>
@@ -23,7 +18,7 @@ const PaymentHistoryCard = () => {
                 <Info className="h-4 w-4 text-finance-gray" />
               </TooltipTrigger>
               <TooltipContent>
-                <p>Un buen historial de pagos mejora tu score crediticio.</p>
+                <p>Aquí puedes ver un resumen claro de tus pagos realizados. Mantener tus pagos al día mejora tu historial crediticio y puede impactar positivamente en tu score de crédito, facilitando futuras solicitudes de crédito.</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -55,8 +50,6 @@ const PaymentHistoryCard = () => {
           </div>
         </div>
       </CardContent>
-    </Card>
-  );
+    </Card>;
 };
-
 export default PaymentHistoryCard;
