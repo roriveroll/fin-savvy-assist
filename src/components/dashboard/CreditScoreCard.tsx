@@ -2,6 +2,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Info } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
 const CreditScoreCard = () => {
   const score = 715;
   const maxScore = 850;
@@ -38,8 +40,10 @@ const CreditScoreCard = () => {
               <TooltipTrigger>
                 <Info className="h-4 w-4 text-finance-gray" />
               </TooltipTrigger>
-              <TooltipContent>
-                <p className="w-64">Este indicador muestra tu puntaje actual del buró de crédito, calculado con base en tu historial financiero y comportamiento de pagos. Un score alto puede ayudarte a obtener mejores condiciones en préstamos, tarjetas de crédito y otros productos financieros.</p>
+              <TooltipContent className="w-[300px]">
+                <ScrollArea className="h-[250px]">
+                  <p className="text-sm">Este indicador muestra tu puntaje actual del buró de crédito, calculado con base en tu historial financiero y comportamiento de pagos. Un score alto puede ayudarte a obtener mejores condiciones en préstamos, tarjetas de crédito y otros productos financieros.</p>
+                </ScrollArea>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -70,4 +74,5 @@ const CreditScoreCard = () => {
       </CardContent>
     </Card>;
 };
+
 export default CreditScoreCard;

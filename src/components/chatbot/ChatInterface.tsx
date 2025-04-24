@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { Send, User, Bot, PlusCircle, CreditCard, ArrowRight, Wallet, ChevronRight, X, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface Message {
   id: number;
@@ -53,7 +53,6 @@ const ChatInterface = ({ apiKey }: ChatInterfaceProps) => {
   const handleSendMessage = async () => {
     if (input.trim() === "") return;
 
-    // Add user message
     const userMessage: Message = {
       id: messages.length + 1,
       type: "user",
@@ -64,11 +63,9 @@ const ChatInterface = ({ apiKey }: ChatInterfaceProps) => {
     setIsTyping(true);
 
     try {
-      // If apiKey is provided, attempt to use external AI service
       if (apiKey) {
         await processWithExternalAI(input, userMessage.id);
       } else {
-        // Fallback to simulated responses
         simulateBotResponse(input);
       }
     } catch (error) {
@@ -86,53 +83,8 @@ const ChatInterface = ({ apiKey }: ChatInterfaceProps) => {
   };
 
   const processWithExternalAI = async (userInput: string, messageId: number) => {
-    // This is a placeholder for actual API integration
-    // In a real implementation, you would:
-    // 1. Call your selected AI API (OpenAI, Hugging Face, etc.)
-    // 2. Process the response
-    // 3. Format it for display
-
     try {
-      /* Example API call structure (commented out as it needs actual implementation):
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'gpt-3.5-turbo',
-          messages: [
-            {
-              role: 'system',
-              content: 'You are a financial assistant that provides advice based on user data.'
-            },
-            {
-              role: 'user',
-              content: userInput
-            }
-          ],
-          temperature: 0.7,
-        }),
-      });
-
-      const data = await response.json();
-      
-      if (data.choices && data.choices.length > 0) {
-        const aiResponse = data.choices[0].message.content;
-        
-        // Process AI response here
-        setMessages(prev => [...prev, {
-          id: prev.length + 1,
-          type: 'bot',
-          text: aiResponse
-        }]);
-      }
-      */
-      
-      // For now, use the simulation as fallback
       simulateBotResponse(userInput);
-      
     } catch (error) {
       console.error("Error calling AI API:", error);
       throw error;
@@ -142,7 +94,6 @@ const ChatInterface = ({ apiKey }: ChatInterfaceProps) => {
   };
 
   const simulateBotResponse = (userInput: string) => {
-    // Simulate bot response (placeholder for actual AI integration)
     setTimeout(() => {
       let botResponse: Message;
 
@@ -227,115 +178,117 @@ const ChatInterface = ({ apiKey }: ChatInterfaceProps) => {
         </p>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}
-          >
-            <div 
-              className={`flex items-start gap-2 max-w-[85%] ${
-                message.type === "user" 
-                  ? "flex-row-reverse" 
-                  : "flex-row"
-              }`}
+      <ScrollArea className="flex-1 p-4">
+        <div className="space-y-6">
+          {messages.map((message) => (
+            <div
+              key={message.id}
+              className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}
             >
-              <div className="flex-shrink-0 mt-1">
-                {message.type === "bot" ? (
-                  <Avatar className="h-8 w-8 bg-finance-blue-light">
-                    <AvatarFallback>AI</AvatarFallback>
-                    <AvatarImage src="/bot-avatar.png" />
-                  </Avatar>
-                ) : (
-                  <Avatar className="h-8 w-8 bg-finance-blue text-white">
-                    <AvatarFallback>U</AvatarFallback>
-                  </Avatar>
-                )}
-              </div>
-              
-              <div
-                className={`rounded-2xl p-3 ${
+              <div 
+                className={`flex items-start gap-3 max-w-[85%] ${
                   message.type === "user" 
-                    ? "bg-finance-blue text-white rounded-tr-none" 
-                    : "bg-white border border-gray-200 shadow-sm text-finance-gray-dark rounded-tl-none"
+                    ? "flex-row-reverse" 
+                    : "flex-row"
                 }`}
               >
-                <p className="text-sm whitespace-pre-wrap">{message.text}</p>
+                <div className="flex-shrink-0 mt-1">
+                  {message.type === "bot" ? (
+                    <Avatar className="h-8 w-8 bg-finance-blue-light">
+                      <AvatarFallback>AI</AvatarFallback>
+                      <AvatarImage src="/bot-avatar.png" />
+                    </Avatar>
+                  ) : (
+                    <Avatar className="h-8 w-8 bg-finance-blue text-white">
+                      <AvatarFallback>U</AvatarFallback>
+                    </Avatar>
+                  )}
+                </div>
                 
-                {message.options && (
-                  <div className="mt-3 space-y-2">
-                    {message.options.map((option, index) => (
-                      <Card key={index} className="border-finance-blue border-opacity-20">
-                        <CardContent className="p-3">
-                          <div className="flex gap-2">
-                            <div className="mt-1 flex-shrink-0">
-                              <option.icon className="h-4 w-4 text-finance-blue" />
+                <div
+                  className={`rounded-2xl p-3 ${
+                    message.type === "user" 
+                      ? "bg-finance-blue text-white rounded-tr-none" 
+                      : "bg-white border border-gray-200 shadow-sm text-finance-gray-dark rounded-tl-none"
+                  }`}
+                >
+                  <p className="text-sm whitespace-pre-wrap">{message.text}</p>
+                  
+                  {message.options && (
+                    <div className="mt-3 space-y-2">
+                      {message.options.map((option, index) => (
+                        <Card key={index} className="border-finance-blue border-opacity-20">
+                          <CardContent className="p-3">
+                            <div className="flex gap-2">
+                              <div className="mt-1 flex-shrink-0">
+                                <option.icon className="h-4 w-4 text-finance-blue" />
+                              </div>
+                              <div>
+                                <h4 className="text-sm font-medium">{option.title}</h4>
+                                <p className="text-xs text-finance-gray-dark">{option.description}</p>
+                              </div>
                             </div>
-                            <div>
-                              <h4 className="text-sm font-medium">{option.title}</h4>
-                              <p className="text-xs text-finance-gray-dark">{option.description}</p>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  )}
+                  
+                  {message.products && (
+                    <div className="mt-3 space-y-3">
+                      {message.products.map((product, index) => (
+                        <Card key={index} className="bg-white">
+                          <CardContent className="p-3">
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <h4 className="text-sm font-medium">{product.name}</h4>
+                                <p className="text-xs text-finance-gray-dark">{product.description}</p>
+                              </div>
+                              <Badge className="bg-finance-blue-light text-finance-blue">{product.match}% match</Badge>
                             </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                )}
-                
-                {message.products && (
-                  <div className="mt-3 space-y-3">
-                    {message.products.map((product, index) => (
-                      <Card key={index} className="bg-white">
-                        <CardContent className="p-3">
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <h4 className="text-sm font-medium">{product.name}</h4>
-                              <p className="text-xs text-finance-gray-dark">{product.description}</p>
+                            <div className="mt-2 flex justify-end">
+                              <Button 
+                                variant="outline" 
+                                size="sm" 
+                                className="text-xs h-8 text-finance-blue border-finance-blue hover:bg-finance-blue-light"
+                                onClick={() => handleProductSelect(product.name)}
+                              >
+                                Más info
+                                <ChevronRight className="h-3 w-3 ml-1" />
+                              </Button>
                             </div>
-                            <Badge className="bg-finance-blue-light text-finance-blue">{product.match}% match</Badge>
-                          </div>
-                          <div className="mt-2 flex justify-end">
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
-                              className="text-xs h-8 text-finance-blue border-finance-blue hover:bg-finance-blue-light"
-                              onClick={() => handleProductSelect(product.name)}
-                            >
-                              Más info
-                              <ChevronRight className="h-3 w-3 ml-1" />
-                            </Button>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        ))}
-        
-        {isTyping && (
-          <div className="flex justify-start">
-            <div className="flex items-start gap-2">
-              <Avatar className="h-8 w-8 bg-finance-blue-light">
-                <AvatarFallback>AI</AvatarFallback>
-                <AvatarImage src="/bot-avatar.png" />
-              </Avatar>
-              
-              <div className="bg-white border border-gray-200 shadow-sm text-finance-gray-dark rounded-2xl rounded-tl-none p-3">
-                <div className="flex gap-1">
-                  <div className="h-2 w-2 rounded-full bg-finance-gray-dark animate-bounce"></div>
-                  <div className="h-2 w-2 rounded-full bg-finance-gray-dark animate-bounce delay-100"></div>
-                  <div className="h-2 w-2 rounded-full bg-finance-gray-dark animate-bounce delay-200"></div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
-          </div>
-        )}
-        
-        <div ref={messagesEndRef} />
-      </div>
+          ))}
+          
+          {isTyping && (
+            <div className="flex justify-start">
+              <div className="flex items-start gap-2">
+                <Avatar className="h-8 w-8 bg-finance-blue-light">
+                  <AvatarFallback>AI</AvatarFallback>
+                  <AvatarImage src="/bot-avatar.png" />
+                </Avatar>
+                
+                <div className="bg-white border border-gray-200 shadow-sm text-finance-gray-dark rounded-2xl rounded-tl-none p-3">
+                  <div className="flex gap-1">
+                    <div className="h-2 w-2 rounded-full bg-finance-gray-dark animate-bounce"></div>
+                    <div className="h-2 w-2 rounded-full bg-finance-gray-dark animate-bounce delay-100"></div>
+                    <div className="h-2 w-2 rounded-full bg-finance-gray-dark animate-bounce delay-200"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          
+          <div ref={messagesEndRef} />
+        </div>
+      </ScrollArea>
 
       <div className="p-4 border-t border-gray-200 bg-white">
         <div className="mb-3 flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">

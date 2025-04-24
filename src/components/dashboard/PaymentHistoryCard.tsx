@@ -1,6 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle, XCircle, Info } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
 const PaymentHistoryCard = () => {
   const paymentData = {
     onTime: 11,
@@ -17,8 +19,10 @@ const PaymentHistoryCard = () => {
               <TooltipTrigger>
                 <Info className="h-4 w-4 text-finance-gray" />
               </TooltipTrigger>
-              <TooltipContent>
-                <p>Resumen claro de tus pagos realizados. Mantener tus pagos al día mejora tu historial crediticio y puede impactar positivamente en tu score de crédito, facilitando futuras solicitudes de crédito.</p>
+              <TooltipContent className="w-[300px]">
+                <ScrollArea className="h-[250px]">
+                  <p className="text-sm">Resumen claro de tus pagos realizados. Mantener tus pagos al día mejora tu historial crediticio y puede impactar positivamente en tu score de crédito, facilitando futuras solicitudes de crédito.</p>
+                </ScrollArea>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -52,4 +56,5 @@ const PaymentHistoryCard = () => {
       </CardContent>
     </Card>;
 };
+
 export default PaymentHistoryCard;

@@ -2,6 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Info, ArrowUpRight } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Link } from "react-router-dom";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
 const AccountsOverviewCard = () => {
   const accounts = [{
     type: 'Cuenta de Débito',
@@ -45,8 +47,10 @@ const AccountsOverviewCard = () => {
               <TooltipTrigger>
                 <Info className="h-4 w-4 text-finance-gray" />
               </TooltipTrigger>
-              <TooltipContent>
-                <p>En esta sección puedes revisar el saldo actual y la evolución reciente de tus diferentes cuentas activas con el banco. Esto incluye cuentas de débito, ahorro, inversión, y tarjetas de crédito, permitiéndote controlar mejor tu dinero y planificar tus finanzas.</p>
+              <TooltipContent className="w-[300px]">
+                <ScrollArea className="h-[250px]">
+                  <p className="text-sm">En esta sección puedes revisar el saldo actual y la evolución reciente de tus diferentes cuentas activas con el banco. Esto incluye cuentas de débito, ahorro, inversión, y tarjetas de crédito, permitiéndote controlar mejor tu dinero y planificar tus finanzas.</p>
+                </ScrollArea>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -81,4 +85,5 @@ const AccountsOverviewCard = () => {
       </CardContent>
     </Card>;
 };
+
 export default AccountsOverviewCard;

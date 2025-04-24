@@ -29,8 +29,8 @@ const ChatbotPopup = () => {
           <MessageCircle className="h-6 w-6" />
         </button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px] h-[600px] p-0">
-        <div className="flex flex-col h-full">
+      <DialogContent className="sm:max-w-[500px] h-[600px] p-0 mx-auto">
+        <div className="flex flex-col h-full max-w-[500px] mx-auto">
           <div className="bg-finance-blue text-white p-4 flex justify-between items-center">
             <h2 className="font-medium flex items-center">
               <MessageCircle className="h-5 w-5 mr-2" />
