@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { MessageCircle } from "lucide-react";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import ChatInterface from "@/components/chatbot/ChatInterface";
 
 const ChatbotPopup = () => {
@@ -27,6 +27,9 @@ const ChatbotPopup = () => {
         </button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px] h-[600px] p-0">
+        <DialogHeader className="sr-only">
+          <DialogTitle>Asistente Financiero</DialogTitle>
+        </DialogHeader>
         <div className="flex flex-col h-full">
           <div className="flex-1 overflow-hidden">
             <ChatInterface apiKey={apiKeySet ? apiKey : undefined} />

@@ -17,6 +17,7 @@ const RecommendedProductsCard = () => {
         benefits: ["Sin anualidad el primer año", "Programa de puntos", "Seguros de viaje"],
         cta: "Solicitar ahora",
         match: 95,
+        url: "https://apps.inbursa.com/InLi/TDC.html"
       },
       {
         id: 2,
@@ -26,6 +27,7 @@ const RecommendedProductsCard = () => {
         benefits: ["Acceso a salas VIP", "Concierge 24/7", "Seguro de compras"],
         cta: "Más información",
         match: 87,
+        url: "https://apps.inbursa.com/InLi/TDC.html"
       }
     ],
     loans: [
@@ -37,6 +39,7 @@ const RecommendedProductsCard = () => {
         benefits: ["Sin comisiones ocultas", "Plazo hasta 60 meses", "Aprobación rápida"],
         cta: "Simular préstamo",
         match: 91,
+        url: "#"
       }
     ],
     insurance: [
@@ -48,6 +51,7 @@ const RecommendedProductsCard = () => {
         benefits: ["Cobertura amplia", "Pagos mensuales accesibles", "Asistencia 24/7"],
         cta: "Cotizar ahora",
         match: 88,
+        url: "#"
       }
     ],
     investments: [
@@ -59,6 +63,7 @@ const RecommendedProductsCard = () => {
         benefits: ["Bajo riesgo", "Retiros flexibles", "Sin monto mínimo"],
         cta: "Comenzar a invertir",
         match: 93,
+        url: "#"
       }
     ]
   };
@@ -122,7 +127,12 @@ const RecommendedProductsCard = () => {
                       </ul>
                       
                       <div className="mt-4 flex justify-end">
-                        <Button variant="outline" size="sm" className="text-finance-blue border-finance-blue hover:bg-finance-blue-light">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="text-finance-blue border-finance-blue hover:bg-finance-blue-light"
+                          onClick={() => window.open(product.url, '_blank', 'noopener,noreferrer')}
+                        >
                           {product.cta}
                           <ArrowUpRight className="ml-1 h-3 w-3" />
                         </Button>
