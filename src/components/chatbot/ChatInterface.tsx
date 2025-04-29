@@ -1,10 +1,8 @@
-
 import { useState, useRef, useEffect } from "react";
-import { Send, User, Bot, PlusCircle, CreditCard, ArrowRight, Wallet, ChevronRight, X, MessageCircle } from "lucide-react";
+import { Send, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -168,19 +166,9 @@ const ChatInterface = ({ apiKey }: ChatInterfaceProps) => {
   ];
 
   return (
-    <div className="h-full flex flex-col rounded-lg overflow-hidden bg-white">
-      <div className="bg-finance-blue px-6 py-4 text-white">
-        <div className="flex items-center">
-          <MessageCircle className="h-5 w-5 mr-2" />
-          <h2 className="font-medium">Asistente Financiero</h2>
-        </div>
-        <p className="text-xs opacity-80 mt-1">
-          Respuestas personalizadas basadas en tu perfil financiero
-        </p>
-      </div>
-
-      <ScrollArea className="flex-1">
-        <div className="p-4 space-y-6">
+    <div className="flex flex-col h-full">
+      <ScrollArea className="flex-1 px-4 py-2">
+        <div className="space-y-6 pb-4">
           {messages.map((message) => (
             <div
               key={message.id}
@@ -255,7 +243,6 @@ const ChatInterface = ({ apiKey }: ChatInterfaceProps) => {
                                 onClick={() => handleProductSelect(product.name)}
                               >
                                 Más info
-                                <ChevronRight className="h-3 w-3 ml-1" />
                               </Button>
                             </div>
                           </CardContent>

@@ -26,14 +26,18 @@ const ChatbotPopup = () => {
           <MessageCircle className="h-6 w-6" />
         </button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px] h-[600px] p-0">
-        <DialogHeader className="sr-only">
-          <DialogTitle>Asistente Financiero</DialogTitle>
+      <DialogContent className="sm:max-w-[400px] max-h-[80vh] p-0 flex flex-col overflow-hidden">
+        <DialogHeader className="p-4 bg-finance-blue text-white">
+          <DialogTitle className="flex items-center">
+            <MessageCircle className="h-5 w-5 mr-2" />
+            Asistente Financiero
+          </DialogTitle>
+          <p className="text-xs opacity-80 mt-1 text-left">
+            Respuestas personalizadas basadas en tu perfil financiero
+          </p>
         </DialogHeader>
-        <div className="flex flex-col h-full">
-          <div className="flex-1 overflow-hidden">
-            <ChatInterface apiKey={apiKeySet ? apiKey : undefined} />
-          </div>
+        <div className="flex-1 overflow-hidden">
+          <ChatInterface apiKey={apiKeySet ? apiKey : undefined} />
         </div>
       </DialogContent>
     </Dialog>
