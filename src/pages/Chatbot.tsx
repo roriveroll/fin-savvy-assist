@@ -1,5 +1,6 @@
 
 import ChatInterface from "@/components/chatbot/ChatInterface";
+import { MessageCircle } from "lucide-react";
 
 const Chatbot = () => {
   return (
