@@ -1,87 +1,63 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Info } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
-const CreditUsageCard = () => {
-  const totalCredit = 120000;
-  const usedCredit = 36000;
-  const percentUsed = Math.round(usedCredit / totalCredit * 100);
+interface CreditUsageCardProps {
+  totalCredit?: number;
+  usedCredit?: number;
+}
+
+const CreditUsageCard = ({ 
+  totalCredit = 5000, 
+  usedCredit = 1500 
+}: CreditUsageCardProps) => {
+  // Calculate percentage of credit used
+  const usagePercentage = Math.round((usedCredit / totalCredit) * 100);
+  const availableCredit = totalCredit - usedCredit;
   
-  const getUsageLevel = (percent: number) => {
-    if (percent <= 30) return {
-      text: "Óptimo",
-      color: "bg-finance-green"
-    };
-    if (percent <= 50) return {
-      text: "Bueno",
-      color: "bg-finance-blue"
-    };
-    if (percent <= 75) return {
-      text: "Precaución",
-      color: "bg-finance-yellow"
-    };
-    return {
-      text: "Alto",
-      color: "bg-finance-red"
-    };
+  // Determine status color based on usage
+  const getStatusColor = () => {
+    if (usagePercentage <= 30) return "bg-green-500";
+    if (usagePercentage <= 60) return "bg-yellow-500";
+    return "bg-red-500";
   };
-  
-  const usageLevel = getUsageLevel(percentUsed);
-  
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('es-MX', {
-      style: 'currency',
-      currency: 'MXN',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(amount);
-  };
-  
+
   return (
     <Card className="card-shadow card-hover">
-      <CardHeader className="px-6 pb-0 pt-6">
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-lg font-medium">Uso de Crédito</CardTitle>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <Info className="h-4 w-4 text-finance-gray" />
-              </TooltipTrigger>
-              <TooltipContent className="w-[300px]">
-                <ScrollArea className="h-[250px]">
-                  <p className="text-sm">Esta barra indica el porcentaje de tu crédito total disponible que ya utilizaste. Mantener este porcentaje por debajo del 30% es ideal para mantener o mejorar tu score crediticio y salud financiera general.</p>
-                </ScrollArea>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
+      <CardHeader className="pb-2">
+        <CardTitle className="text-lg font-medium">Uso de Crédito</CardTitle>
       </CardHeader>
-      <CardContent className="p-6">
-        <div className="mb-6">
-          <div className="flex justify-between items-center mb-2">
-            <div className="text-sm text-finance-gray-dark">Disponible</div>
-            <div className="text-sm font-medium">{formatCurrency(totalCredit - usedCredit)}</div>
-          </div>
-          <Progress value={percentUsed} className={`h-3 ${usageLevel.color}`} />
-          <div className="flex justify-between items-center mt-1">
-            <div className="text-sm text-finance-gray-dark">Utilizado</div>
-            <div className="text-sm font-medium">{formatCurrency(usedCredit)}</div>
-          </div>
-        </div>
-        
-        <div className="flex justify-between items-end">
-          <div>
-            <div className="text-3xl font-bold">{percentUsed}%</div>
-            <div className="text-sm text-finance-gray-dark">de {formatCurrency(totalCredit)}</div>
+      <CardContent>
+        <div className="space-y-6">
+          <div className="space-y-2">
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-500">Uso</span>
+              <span className="font-medium">{usagePercentage}%</span>
+            </div>
+            <Progress value={usagePercentage} className="h-2" indicatorClassName={getStatusColor()} />
           </div>
           
-          <div className={`px-3 py-1 rounded-full ${usageLevel.color.replace('bg-', 'bg-')}`}>
-            <span className={`text-sm font-medium ${usageLevel.color === 'bg-finance-yellow' || usageLevel.color === 'bg-finance-green' ? 'text-finance-gray-dark' : 'text-white'}`}>
-              {usageLevel.text}
-            </span>
+          <div className="grid grid-cols-2 gap-4 pt-2">
+            <div className="bg-gray-50 p-3 rounded-lg text-center">
+              <p className="text-sm text-gray-500">Disponible</p>
+              <p className="text-lg font-semibold text-green-600">€{availableCredit.toLocaleString()}</p>
+            </div>
+            <div className="bg-gray-50 p-3 rounded-lg text-center">
+              <p className="text-sm text-gray-500">Límite</p>
+              <p className="text-lg font-semibold">€{totalCredit.toLocaleString()}</p>
+            </div>
+          </div>
+          
+          <div className="bg-finance-blue-light rounded-lg p-3">
+            <p className="text-sm font-medium text-finance-blue">
+              {usagePercentage <= 30 ? (
+                "Excelente uso de tu crédito. Mantén un uso bajo para mejorar tu puntaje."
+              ) : usagePercentage <= 60 ? (
+                "Buen manejo de crédito. Considera reducir ligeramente para optimizar tu puntaje."
+              ) : (
+                "Alto uso de crédito. Intenta reducirlo por debajo del 30% para mejorar tu puntaje."
+              )}
+            </p>
           </div>
         </div>
       </CardContent>

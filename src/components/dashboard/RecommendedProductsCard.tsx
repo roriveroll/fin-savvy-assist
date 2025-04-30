@@ -1,155 +1,128 @@
 
-import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CreditCard, Landmark, Shield, TrendingUp, ArrowRight, ArrowUpRight, ThumbsUp, Wallet } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { CreditCard, Landmark, PiggyBank } from "lucide-react";
 
-const RecommendedProductsCard = () => {
-  const products = {
-    cards: [
-      {
-        id: 1,
-        name: "Tarjeta Rewards Plus",
-        description: "3% cashback en restaurantes, 2% en viajes",
-        icon: CreditCard,
-        benefits: ["Sin anualidad el primer año", "Programa de puntos", "Seguros de viaje"],
-        cta: "Solicitar ahora",
-        match: 95,
-        url: "https://apps.inbursa.com/InLi/TDC.html"
-      },
-      {
-        id: 2,
-        name: "Tarjeta Platinum",
-        description: "Tasa preferencial y beneficios exclusivos",
-        icon: CreditCard,
-        benefits: ["Acceso a salas VIP", "Concierge 24/7", "Seguro de compras"],
-        cta: "Más información",
-        match: 87,
-        url: "https://apps.inbursa.com/InLi/TDC.html"
-      }
-    ],
-    loans: [
-      {
-        id: 3,
-        name: "Préstamo Personal",
-        description: "Tasa desde 12.9% anual",
-        icon: Wallet,
-        benefits: ["Sin comisiones ocultas", "Plazo hasta 60 meses", "Aprobación rápida"],
-        cta: "Simular préstamo",
-        match: 91,
-        url: "#"
-      }
-    ],
-    insurance: [
-      {
-        id: 4,
-        name: "Seguro de Vida",
-        description: "Protección para ti y tu familia",
-        icon: Shield,
-        benefits: ["Cobertura amplia", "Pagos mensuales accesibles", "Asistencia 24/7"],
-        cta: "Cotizar ahora",
-        match: 88,
-        url: "#"
-      }
-    ],
-    investments: [
-      {
-        id: 5,
-        name: "Fondo de Inversión",
-        description: "Rendimiento anual estimado: 8.2%",
-        icon: TrendingUp,
-        benefits: ["Bajo riesgo", "Retiros flexibles", "Sin monto mínimo"],
-        cta: "Comenzar a invertir",
-        match: 93,
-        url: "#"
-      }
-    ]
-  };
+interface RecommendedProductsCardProps {
+  creditScore?: number;
+}
 
-  const getActiveTabCards = (tab: string) => {
-    switch(tab) {
-      case "cards": return products.cards;
-      case "loans": return products.loans;
-      case "insurance": return products.insurance;
-      case "investments": return products.investments;
-      default: return products.cards;
+const RecommendedProductsCard = ({ creditScore = 750 }: RecommendedProductsCardProps) => {
+  // Define product recommendations based on credit score
+  const getRecommendations = () => {
+    if (creditScore >= 800) {
+      return [
+        {
+          title: "Tarjeta Premium",
+          description: "Nuestra tarjeta exclusiva con beneficios premium y las tasas más bajas.",
+          apr: "12.99%",
+          icon: CreditCard,
+          iconBg: "bg-purple-100",
+          iconColor: "text-purple-600",
+        },
+        {
+          title: "Préstamo Personal Elite",
+          description: "Préstamo con la tasa más favorable y opciones de pago flexibles.",
+          apr: "5.49%",
+          icon: Landmark,
+          iconBg: "bg-blue-100",
+          iconColor: "text-blue-600",
+        },
+        {
+          title: "Cuenta de Ahorro Premium",
+          description: "Maximiza tus ahorros con nuestra cuenta de alto rendimiento.",
+          apr: "3.75%",
+          icon: PiggyBank,
+          iconBg: "bg-green-100",
+          iconColor: "text-green-600",
+        },
+      ];
+    } else if (creditScore >= 700) {
+      return [
+        {
+          title: "Tarjeta Recompensas Plus",
+          description: "Acumula puntos en todas tus compras con excelentes beneficios.",
+          apr: "15.99%",
+          icon: CreditCard,
+          iconBg: "bg-purple-100",
+          iconColor: "text-purple-600",
+        },
+        {
+          title: "Préstamo Personal Optimizado",
+          description: "Excelentes condiciones para tus proyectos personales.",
+          apr: "7.49%",
+          icon: Landmark,
+          iconBg: "bg-blue-100",
+          iconColor: "text-blue-600",
+        },
+        {
+          title: "Cuenta de Ahorro Crecimiento",
+          description: "Haz crecer tus ahorros con intereses competitivos.",
+          apr: "3.25%",
+          icon: PiggyBank,
+          iconBg: "bg-green-100",
+          iconColor: "text-green-600",
+        },
+      ];
+    } else {
+      return [
+        {
+          title: "Tarjeta Construcción de Crédito",
+          description: "Ideal para mejorar tu historial crediticio con beneficios básicos.",
+          apr: "19.99%",
+          icon: CreditCard,
+          iconBg: "bg-purple-100",
+          iconColor: "text-purple-600",
+        },
+        {
+          title: "Préstamo de Consolidación",
+          description: "Simplifica tus deudas y mejora tu puntaje crediticio.",
+          apr: "10.99%",
+          icon: Landmark,
+          iconBg: "bg-blue-100",
+          iconColor: "text-blue-600",
+        },
+        {
+          title: "Cuenta de Ahorro Inicial",
+          description: "Comienza a ahorrar con una cuenta sin comisiones mensuales.",
+          apr: "2.50%",
+          icon: PiggyBank,
+          iconBg: "bg-green-100",
+          iconColor: "text-green-600",
+        },
+      ];
     }
   };
 
+  const recommendations = getRecommendations();
+
   return (
-    <Card className="card-shadow card-hover">
-      <CardHeader className="px-6 pb-0 pt-6">
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-lg font-medium">Productos Recomendados</CardTitle>
-          <ThumbsUp className="h-4 w-4 text-finance-purple" />
-        </div>
-        <p className="text-sm text-finance-gray-dark mt-1">
-          Seleccionados especialmente para tu perfil financiero
-        </p>
+    <Card className="card-shadow">
+      <CardHeader>
+        <CardTitle>Productos Recomendados</CardTitle>
       </CardHeader>
-      <CardContent className="p-6">
-        <Tabs defaultValue="cards">
-          <TabsList className="grid grid-cols-4 mb-6">
-            <TabsTrigger value="cards" className="text-xs sm:text-sm">Tarjetas</TabsTrigger>
-            <TabsTrigger value="loans" className="text-xs sm:text-sm">Préstamos</TabsTrigger>
-            <TabsTrigger value="insurance" className="text-xs sm:text-sm">Seguros</TabsTrigger>
-            <TabsTrigger value="investments" className="text-xs sm:text-sm">Inversiones</TabsTrigger>
-          </TabsList>
-          
-          {Object.keys(products).map((tab) => (
-            <TabsContent key={tab} value={tab} className="space-y-4">
-              {getActiveTabCards(tab).map((product) => (
-                <div key={product.id} className="border border-gray-100 rounded-lg p-4 hover:shadow-sm transition-shadow">
-                  <div className="flex items-start gap-4">
-                    <div className="bg-finance-purple-light p-2 rounded-lg">
-                      <product.icon className="h-6 w-6 text-finance-purple" />
-                    </div>
-                    
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between">
-                        <h3 className="font-medium">{product.name}</h3>
-                        <div className="bg-finance-blue-light text-finance-blue text-xs font-medium px-2 py-1 rounded-full">
-                          {product.match}% match
-                        </div>
-                      </div>
-                      
-                      <p className="text-sm text-finance-gray-dark mt-1">{product.description}</p>
-                      
-                      <ul className="mt-3 space-y-1">
-                        {product.benefits.map((benefit, i) => (
-                          <li key={i} className="flex items-center text-xs text-finance-gray-dark">
-                            <ArrowRight className="h-3 w-3 mr-1 text-finance-blue" />
-                            {benefit}
-                          </li>
-                        ))}
-                      </ul>
-                      
-                      <div className="mt-4 flex justify-end">
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="text-finance-blue border-finance-blue hover:bg-finance-blue-light"
-                          onClick={() => window.open(product.url, '_blank', 'noopener,noreferrer')}
-                        >
-                          {product.cta}
-                          <ArrowUpRight className="ml-1 h-3 w-3" />
-                        </Button>
-                      </div>
-                    </div>
+      <CardContent>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {recommendations.map((product, index) => (
+            <Card key={index} className="border border-gray-200">
+              <CardContent className="p-6">
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <div className={`p-3 rounded-full ${product.iconBg}`}>
+                    <product.icon className={`h-6 w-6 ${product.iconColor}`} />
                   </div>
+                  <div>
+                    <h3 className="font-semibold text-lg">{product.title}</h3>
+                    <p className="text-sm text-gray-500 mt-1">{product.description}</p>
+                  </div>
+                  <div className="bg-gray-50 w-full p-2 rounded-md">
+                    <p className="text-xs text-gray-500">APR desde</p>
+                    <p className="font-semibold text-lg">{product.apr}</p>
+                  </div>
+                  <Button variant="outline" className="w-full">Más información</Button>
                 </div>
-              ))}
-            </TabsContent>
+              </CardContent>
+            </Card>
           ))}
-        </Tabs>
-        
-        <div className="mt-4 pt-4 border-t border-gray-100">
-          <Link to="/recommendations" className="text-finance-blue flex items-center justify-center font-medium">
-            Ver todas las recomendaciones
-            <ArrowUpRight className="h-4 w-4 ml-1" />
-          </Link>
         </div>
       </CardContent>
     </Card>

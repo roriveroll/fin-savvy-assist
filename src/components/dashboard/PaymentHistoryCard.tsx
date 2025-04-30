@@ -1,60 +1,97 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CheckCircle, XCircle, Info } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
-const PaymentHistoryCard = () => {
-  const paymentData = {
-    onTime: 11,
-    late: 1,
-    total: 12
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CheckCircle2, AlertCircle, Clock } from "lucide-react";
+
+interface Payment {
+  date: string;
+  amount: number;
+  concept: string;
+  status: "paid" | "pending" | "late";
+}
+
+interface PaymentHistoryCardProps {
+  history?: Payment[];
+}
+
+const PaymentHistoryCard = ({ history = [] }: PaymentHistoryCardProps) => {
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'short' };
+    return new Date(dateString).toLocaleDateString('es-ES', options);
   };
-  const onTimePercentage = Math.round(paymentData.onTime / paymentData.total * 100);
-  return <Card className="card-shadow card-hover">
-      <CardHeader className="px-6 pb-0 pt-6">
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-lg font-medium">Historial de Pagos</CardTitle>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <Info className="h-4 w-4 text-finance-gray" />
-              </TooltipTrigger>
-              <TooltipContent className="w-[300px]">
-                <ScrollArea className="h-[250px]">
-                  <p className="text-sm">Resumen claro de tus pagos realizados. Mantener tus pagos al día mejora tu historial crediticio y puede impactar positivamente en tu score de crédito, facilitando futuras solicitudes de crédito.</p>
-                </ScrollArea>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case "paid":
+        return <CheckCircle2 className="w-5 h-5 text-green-500" />;
+      case "pending":
+        return <Clock className="w-5 h-5 text-yellow-500" />;
+      case "late":
+        return <AlertCircle className="w-5 h-5 text-red-500" />;
+      default:
+        return null;
+    }
+  };
+
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case "paid":
+        return "Pagado";
+      case "pending":
+        return "Pendiente";
+      case "late":
+        return "Atrasado";
+      default:
+        return "";
+    }
+  };
+
+  const displayHistory = history.length > 0 
+    ? history 
+    : [
+        { date: "2025-04-15", amount: 500, concept: "Préstamo personal", status: "paid" },
+        { date: "2025-03-15", amount: 500, concept: "Préstamo personal", status: "paid" },
+        { date: "2025-02-15", amount: 500, concept: "Préstamo personal", status: "late" }
+      ];
+
+  return (
+    <Card className="card-shadow card-hover">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-lg font-medium">Historial de Pagos</CardTitle>
       </CardHeader>
-      <CardContent className="p-6">
-        <div className="flex justify-between items-center mb-8">
-          <div className="flex items-center">
-            <CheckCircle className="h-12 w-12 text-finance-green mr-4" />
-            <div>
-              <div className="text-3xl font-bold">{paymentData.onTime}</div>
-              <div className="text-sm text-finance-gray-dark">Pagos a tiempo</div>
+      <CardContent>
+        <div className="space-y-4">
+          {displayHistory.slice(0, 4).map((payment, index) => (
+            <div key={index} className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="bg-gray-100 p-2 rounded-full">
+                  {getStatusIcon(payment.status)}
+                </div>
+                <div>
+                  <p className="font-medium">{payment.concept}</p>
+                  <p className="text-sm text-gray-500">{formatDate(payment.date)}</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="font-medium">€{payment.amount}</p>
+                <p className={`text-sm ${
+                  payment.status === "paid" ? "text-green-500" : 
+                  payment.status === "pending" ? "text-yellow-500" : "text-red-500"
+                }`}>
+                  {getStatusText(payment.status)}
+                </p>
+              </div>
             </div>
-          </div>
+          ))}
           
-          <div className="flex items-center">
-            <XCircle className="h-12 w-12 text-finance-red mr-4" />
-            <div>
-              <div className="text-3xl font-bold">{paymentData.late}</div>
-              <div className="text-sm text-finance-gray-dark">Pagos tardíos</div>
+          {displayHistory.length === 0 && (
+            <div className="text-center py-4 text-gray-500">
+              No hay historial de pagos disponible
             </div>
-          </div>
-        </div>
-        
-        <div className="flex justify-center items-center">
-          <div className="text-center">
-            <div className="text-4xl font-bold text-finance-blue">{onTimePercentage}%</div>
-            <div className="text-sm text-finance-gray-dark">Pagos realizados a tiempo</div>
-          </div>
+          )}
         </div>
       </CardContent>
-    </Card>;
+    </Card>
+  );
 };
 
 export default PaymentHistoryCard;
