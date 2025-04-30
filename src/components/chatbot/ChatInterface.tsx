@@ -168,7 +168,7 @@ const ChatInterface = ({ apiKey }: ChatInterfaceProps) => {
 
   return (
     <div className="flex flex-col h-full">
-      <ScrollArea className="flex-1 px-4 py-2">
+      <ScrollArea className="flex-1 px-4 py-2 overflow-y-auto">
         <div className="space-y-6 pb-4">
           {messages.map((message) => (
             <div
