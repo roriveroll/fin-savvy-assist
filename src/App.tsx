@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import MainLayout from "./components/layout/MainLayout";
 import Chatbot from "./pages/Chatbot";
@@ -39,6 +40,7 @@ const AppRoutes = () => {
       }>
         <Route index element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/settings" element={<Dashboard />} />
         <Route path="/chatbot" element={<Chatbot />} />
       </Route>

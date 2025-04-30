@@ -1,66 +1,56 @@
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 
 interface CreditUsageCardProps {
-  totalCredit?: number;
-  usedCredit?: number;
+  totalCredit: number;
+  usedCredit: number;
 }
 
-const CreditUsageCard = ({ 
-  totalCredit = 5000, 
-  usedCredit = 1500 
-}: CreditUsageCardProps) => {
-  // Calculate percentage of credit used
+const CreditUsageCard = ({ totalCredit, usedCredit }: CreditUsageCardProps) => {
   const usagePercentage = Math.round((usedCredit / totalCredit) * 100);
   const availableCredit = totalCredit - usedCredit;
   
-  // Determine status color based on usage
-  const getStatusColor = () => {
+  // Determine color based on usage percentage
+  const getUsageColor = () => {
     if (usagePercentage <= 30) return "bg-green-500";
-    if (usagePercentage <= 60) return "bg-yellow-500";
+    if (usagePercentage <= 70) return "bg-yellow-500";
     return "bg-red-500";
   };
 
   return (
-    <Card className="card-shadow card-hover">
+    <Card>
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg font-medium">Uso de Crédito</CardTitle>
+        <CardTitle className="text-lg">Uso de Crédito</CardTitle>
+        <CardDescription>Balance y disponibilidad de tu crédito</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-6">
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Uso</span>
-              <span className="font-medium">{usagePercentage}%</span>
-            </div>
-            <Progress value={usagePercentage} className="h-2" indicatorClassName={getStatusColor()} />
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <span className="text-sm font-medium text-finance-gray-dark">Utilizado ({usagePercentage}%)</span>
+            <span className="text-sm font-medium">${usedCredit.toLocaleString()}</span>
           </div>
           
-          <div className="grid grid-cols-2 gap-4 pt-2">
-            <div className="bg-gray-50 p-3 rounded-lg text-center">
-              <p className="text-sm text-gray-500">Disponible</p>
-              <p className="text-lg font-semibold text-green-600">€{availableCredit.toLocaleString()}</p>
-            </div>
-            <div className="bg-gray-50 p-3 rounded-lg text-center">
-              <p className="text-sm text-gray-500">Límite</p>
-              <p className="text-lg font-semibold">€{totalCredit.toLocaleString()}</p>
-            </div>
-          </div>
+          <Progress 
+            value={usagePercentage} 
+            className="h-2 bg-gray-200" 
+            // Fix: Remove the indicatorClassName prop
+          />
           
-          <div className="bg-finance-blue-light rounded-lg p-3">
-            <p className="text-sm font-medium text-finance-blue">
-              {usagePercentage <= 30 ? (
-                "Excelente uso de tu crédito. Mantén un uso bajo para mejorar tu puntaje."
-              ) : usagePercentage <= 60 ? (
-                "Buen manejo de crédito. Considera reducir ligeramente para optimizar tu puntaje."
-              ) : (
-                "Alto uso de crédito. Intenta reducirlo por debajo del 30% para mejorar tu puntaje."
-              )}
-            </p>
+          <div className="flex justify-between items-center">
+            <span className="text-sm font-medium text-finance-gray-dark">Disponible</span>
+            <span className="text-sm font-medium">${availableCredit.toLocaleString()}</span>
           </div>
         </div>
       </CardContent>
+      <CardFooter className="pt-0">
+        <div className="w-full p-3 bg-finance-blue-light rounded-lg">
+          <div className="flex justify-between items-center">
+            <span className="text-sm text-finance-gray-dark">Total</span>
+            <span className="font-semibold">${totalCredit.toLocaleString()}</span>
+          </div>
+        </div>
+      </CardFooter>
     </Card>
   );
 };
