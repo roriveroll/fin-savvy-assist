@@ -1,5 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Info } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface CreditScoreCardProps {
   score?: number;
@@ -21,7 +23,17 @@ const CreditScoreCard = ({ score = 750 }: CreditScoreCardProps) => {
   return (
     <Card className="card-shadow card-hover">
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg font-medium">Puntaje Crediticio</CardTitle>
+        <div className="flex justify-between items-center">
+          <CardTitle className="text-lg font-medium">Puntaje Crediticio</CardTitle>
+          <Tooltip>
+            <TooltipTrigger>
+              <Info className="h-5 w-5 text-gray-400" />
+            </TooltipTrigger>
+            <TooltipContent side="top" className="max-w-xs">
+              <p>El puntaje crediticio es una calificación que representa tu historial de crédito. Varía de 300 a 850, donde un puntaje más alto indica un mejor historial crediticio.</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col items-center justify-center pt-2">

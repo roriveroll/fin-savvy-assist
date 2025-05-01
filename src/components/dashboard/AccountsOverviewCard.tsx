@@ -1,6 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Wallet, PiggyBank, Landmark } from "lucide-react";
+import { Wallet, PiggyBank, Landmark, Info } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface AccountsOverviewCardProps {
   checking?: number;
@@ -41,7 +42,17 @@ const AccountsOverviewCard = ({
   return (
     <Card className="card-shadow">
       <CardHeader>
-        <CardTitle>Resumen de Cuentas</CardTitle>
+        <div className="flex justify-between items-center">
+          <CardTitle>Resumen de Cuentas</CardTitle>
+          <Tooltip>
+            <TooltipTrigger>
+              <Info className="h-5 w-5 text-gray-400" />
+            </TooltipTrigger>
+            <TooltipContent side="top" className="max-w-xs">
+              <p>Resumen de tus cuentas financieras, incluyendo activos (cuentas corrientes y de ahorro) y pasivos (préstamos). El patrimonio neto es la diferencia entre tus activos y pasivos.</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="grid grid-cols-2 gap-4">

@@ -1,6 +1,8 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
+import { Info } from "lucide-react";
+import { Tooltip as UITooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface ExpensesAnalysisCardProps {
   expenses?: Record<string, number>;
@@ -23,21 +25,51 @@ const ExpensesAnalysisCard = ({ expenses = {} }: ExpensesAnalysisCardProps) => {
 
   const totalExpenses = expenseData.reduce((sum, item) => sum + item.value, 0);
 
+  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * Math.PI / 180);
+    const y = cy + radius * Math.sin(-midAngle * Math.PI / 180);
+  
+    return percent > 0.05 ? (
+      <text 
+        x={x} 
+        y={y} 
+        fill="white" 
+        textAnchor={x > cx ? 'start' : 'end'} 
+        dominantBaseline="central"
+        fontSize={12}
+      >
+        {`${(percent * 100).toFixed(0)}%`}
+      </text>
+    ) : null;
+  };
+
   return (
     <Card className="card-shadow">
       <CardHeader>
-        <CardTitle>Análisis de Gastos</CardTitle>
+        <div className="flex justify-between items-center">
+          <CardTitle>Análisis de Gastos</CardTitle>
+          <UITooltip>
+            <TooltipTrigger>
+              <Info className="h-5 w-5 text-gray-400" />
+            </TooltipTrigger>
+            <TooltipContent side="left" className="max-w-xs">
+              <p>Desglose de tus gastos mensuales por categoría. Te ayuda a identificar dónde estás gastando más dinero y a planificar tu presupuesto de manera más efectiva.</p>
+            </TooltipContent>
+          </UITooltip>
+        </div>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col md:flex-row items-center gap-6">
-          <div className="w-full md:w-1/2 h-[200px]">
+          <div className="w-full md:w-1/2 h-[240px] flex items-center justify-center">
             <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
+              <PieChart margin={{ top: 10, right: 10, bottom: 10, left: 10 }}>
                 <Pie
                   data={expenseData}
                   cx="50%"
                   cy="50%"
                   labelLine={false}
+                  label={renderCustomizedLabel}
                   outerRadius={80}
                   fill="#8884d8"
                   dataKey="value"
@@ -46,8 +78,14 @@ const ExpensesAnalysisCard = ({ expenses = {} }: ExpensesAnalysisCardProps) => {
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip formatter={(value) => `€${value}`} />
-                <Legend />
+                <Tooltip formatter={(value: number) => `€${value}`} />
+                <Legend 
+                  layout="horizontal" 
+                  verticalAlign="bottom" 
+                  align="center"
+                  wrapperStyle={{ paddingTop: "15px" }}
+                  formatter={(value) => <span style={{ fontSize: '12px' }}>{value}</span>}
+                />
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -69,7 +107,7 @@ const ExpensesAnalysisCard = ({ expenses = {} }: ExpensesAnalysisCardProps) => {
                     <div className="flex items-center gap-2">
                       <div 
                         className="w-3 h-3 rounded-full" 
-                        style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                        style={{ backgroundColor: COLORS[expenseData.findIndex(e => e.name === expense.name) % COLORS.length] }}
                       ></div>
                       <span>{expense.name}</span>
                     </div>
